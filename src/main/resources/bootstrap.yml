@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    enabled: true
+    config:
+      uri: http://192.168.40.204:8888
+#      discovery:
+#        enabled: true
+#        serviceId: config
+      name: democonfig
+      profile: dev
+#      failFast: true
+#      retry:
+#        maxAttempts: 10
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.40.204:8761/eureka/

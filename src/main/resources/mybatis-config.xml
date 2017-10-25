@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--因为存在多个版本的entity,为了防止混淆，不能使用typeAliases,by fable-->
+    <!--<typeAliases>-->
+        <!--<package name="com.peilian.demo.v1.entity"/>-->
+    <!--</typeAliases>-->
+    <mappers>
+        <mapper resource="mybatis/v1/CountryMapper.xml"/>
+    </mappers>
+</configuration>

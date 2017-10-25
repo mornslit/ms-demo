@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peilian.demo.v1.mapper.CountryMapper">
+
+   <!--Country必须具体到全部package com.peilian.demo.v1.entity.Country,防止多版本造成的混淆 -->
+    <resultMap id="resultMap" type="com.peilian.demo.v1.entity.Country">
+        <result column="id" property="id"/>
+        <result column="countryname" property="countryName"/>
+        <result column="countrycode" property="countryCode"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="resultMap">
+        select id ,countryname,countrycode,status
+        from country
+    </select>
+    <select id="getById" resultMap="resultMap" parameterType="java.lang.Long">
+        select id ,countryname,countrycode,status
+        from country where id =#{id}
+    </select>
+    <insert id="insert" parameterType="com.peilian.demo.v1.entity.Country" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO country (countrycode, countryname)
+        VALUES (#{countryCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR})
+    </insert>
+    <!--INSERT INTO country (countrycode, countryname,status)-->
+    <!--VALUES (#{countryCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR},#{status} )-->
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM country
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+
+
+</mapper>
