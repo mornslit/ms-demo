@@ -20,6 +20,6 @@ pipeline {
     }
   }
   environment {
-    PATH = '/var/gradle_home/bin:$PATH'
+    PATHEXTRA = '/var/gradle_home/bin'
   }
 }
