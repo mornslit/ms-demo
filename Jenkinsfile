@@ -19,4 +19,7 @@ pipeline {
       }
     }
   }
+  environment {
+    PATH = '/var/gradle_home/bin:$PATH'
+  }
 }
