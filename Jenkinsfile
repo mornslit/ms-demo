@@ -5,7 +5,6 @@ pipeline {
       steps {
         git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
-        sh 'gradle build'
       }
     }
     stage('test') {
