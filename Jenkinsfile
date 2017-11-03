@@ -5,8 +5,8 @@ pipeline {
       steps {
         git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
-        //sh '/var/gradle_home/bin/gradle build'
-        sh 'java --version'
+        sh '/var/gradle_home/bin/gradle build'
+        sh 'java -version'
       }
     }
     stage('test') {
@@ -19,8 +19,5 @@ pipeline {
         echo 'deploying'
       }
     }
-  }
-  environment {
-    PATHEXTRA = '/var/gradle_home/bin'
   }
 }
