@@ -6,9 +6,11 @@ pipeline {
         env.PATH = "${tool 'Gradle4.2.1'}/bin:${env.PATH}"
         git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
-        sh 'gradle build'
-        if ($?) 
+        sh returnStatus: true, script: 'gradle build'
+        if (returnStatus == '0') 
           sh 'java -version'
+        else
+          echo 'fail'
       }
     }
     stage('test') {
