@@ -1,14 +1,9 @@
-gitRepo = 'https://github.com'
-gitBranch = 'master'
-projMaster = 'jiangxiaogang@peilian.com'
-testEmail = 'jiangxiaogang@peilian.com'
-
 pipeline {
   agent any
   stages {
     stage('build') {
       steps {
-        git(url: gitRepo.'mornslit/ms-demo.git', branch: gitBranch, credentialsId: 'mornslit')
+        git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
         //sh '/var/gradle_home/bin/gradle build'
         sh 'java --version'
