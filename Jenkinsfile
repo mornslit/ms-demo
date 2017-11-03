@@ -2,7 +2,7 @@ pipeline {
   agent any
   
   tools {
-    gradle ‘Gradle4.2.1’
+    gradle 'Gradle4.2.1'
   }
 
   environment {
