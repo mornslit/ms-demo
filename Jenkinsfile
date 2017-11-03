@@ -1,12 +1,14 @@
 pipeline {
   agent any
   stages {
-    stage('build') {
+    stage('build and unit-test') {
       steps {
+        env.PATH = "${tool 'Gradle4.2.1'}/bin:${env.PATH}"
         git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
-        sh '/var/gradle_home/bin/gradle build'
-        sh 'java -version'
+        sh 'gradle build'
+        if ($?) 
+          sh 'java -version'
       }
     }
     stage('test') {
