@@ -25,7 +25,10 @@ pipeline {
       }
       post {
         success {
-          when (branch 'master') {
+          when {
+            branch 'master'
+          }
+          steps {
             echo 'build master success'
           }
         }
