@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('build and unit-test') {
       steps {
-        withEnv (['PATH+GRADLE = ${tool 'Gradle4.2.1'}']) {
+        withEnv (["PATH+GRADLE = ${tool 'Gradle4.2.1'}/bin"]) {
         git(url: 'https://github.com/mornslit/ms-demo.git', branch: 'master', credentialsId: 'mornslit')
         echo 'Building'
         try {
