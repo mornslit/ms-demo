@@ -10,8 +10,8 @@ pipeline {
     CRED_ID = 'mornslit'
     QA_EMAIL = 'jiangxiaogang@peilian.com'
     PM_EMAIL = 'yukun@peilian.com'
-    DEV_HOST =
-    QA_HOST =
+    DEV_HOST = ''
+    QA_HOST = ''
   }
 
   stages {
@@ -22,7 +22,6 @@ pipeline {
         sh 'gradle build'
         echo 'success'
         sh 'java -version'
-        }
       }
       post {
         success {
