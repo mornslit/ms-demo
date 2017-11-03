@@ -10,7 +10,8 @@ pipeline {
       steps {
         git(url: gitRepo.'mornslit/ms-demo.git', branch: gitBranch, credentialsId: 'mornslit')
         echo 'Building'
-        sh '/var/gradle_home/bin/gradle build'
+        //sh '/var/gradle_home/bin/gradle build'
+        sh 'java --version'
       }
     }
     stage('test') {
