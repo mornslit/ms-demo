@@ -17,11 +17,11 @@ pipeline {
   stages {
     stage('build and unit-test') {
       steps {
-        git(url: env.GIT_URL, branch: env.BRANCH_NAME, credentialsId: env.CRED_ID)
+        //git(url: env.GIT_URL, branch: env.BRANCH_NAME, credentialsId: env.CRED_ID)
         echo 'Building'
-        sh 'gradle build'
+        //sh 'gradle build'
         echo 'success'
-        sh 'java -version'
+        sh 'java --version'
       }
       post {
         success {
@@ -33,8 +33,10 @@ pipeline {
           }
         }
         failure {
-          echo 'build env.BRANCH_NAME failed'
-          //mail ${QA_MAIL}
+          echo "build '${env.BRANCH_NAME}' failed"
+          script {
+            emailext body: 'fail', recipientProviders: [[$class: 'DevelopersRecipientProvider']], subject: 'fail'
+          }
         }
         always {
           echo 'done'
