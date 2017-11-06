@@ -1,59 +1,63 @@
-pipeline {
-  agent any
-  
-  tools {
-    gradle 'Gradle4.2.1'
-  }
+node {
+    def GIT_URL = 'https://github.com/mornslit/ms-demo.git'
+    def CRED_ID = 'mornslit'
+    def QA_EMAIL = 'jiangxiaogang@peilian.com'
+    def PM_EMAIL = 'yukun@peilian.com'
+    def DEV_HOST = ''
+    def QA_HOST = ''
 
-  environment {
-    GIT_URL = 'https://github.com/mornslit/ms-demo.git'
-    CRED_ID = 'mornslit'
-    QA_EMAIL = 'jiangxiaogang@peilian.com'
-    PM_EMAIL = 'yukun@peilian.com'
-    DEV_HOST = ''
-    QA_HOST = ''
-  }
+    def GRADLE_HOME = "${tool name: 'Gradle4.2.1', type: 'gradle'}/bin/gradle"
 
-  stages {
-    stage('build and unit-test') {
-      steps {
-        //git(url: env.GIT_URL, branch: env.BRANCH_NAME, credentialsId: env.CRED_ID)
+    stage ('build') {
+        git url: GIT_URL, branch: BRANCH_NAME, credentialsId: CRED_ID
         echo 'Building'
-        //sh 'gradle build'
-        echo 'success'
-        sh 'java --version'
-      }
-      post {
-        success {
-          when {
-            branch 'master'
-          }
-          steps {
-            echo 'build master success'
-          }
+        try {
+            //sh "${GRADLE} build -x test"
+            sh 'java -version'
+            if (env.BRANCH_NAME == 'master') {
+                echo "build '${env.BRANCH_NAME}' success"
+            }
+            def temp = sh returnStdout: true, script: 'echo AAA'
+            echo "temp is '${temp}'"
+        } catch (err) {
+            echo "Caught: ${err}"
+            echo "build '${env.BRANCH_NAME}' failed"
+            //emailext body: 'fail', recipientProviders: [[$class: 'DevelopersRecipientProvider']], subject: 'fail'
+            //emailext body: 'fail', to: QA_EMAIL, subject: 'fail'
+            currentBuild.result = 'FAILURE'
+            throw err
+        } finally {
+            echo 'finally'
         }
-        failure {
-          echo "build '${env.BRANCH_NAME}' failed"
-          script {
-            emailext body: 'fail', recipientProviders: [[$class: 'DevelopersRecipientProvider']], subject: 'fail'
-          }
-        }
-        always {
-          echo 'done'
-        }
-      }
     }
 
-    stage('test') {
-      steps {
-        echo 'Testing'
-      }
+    stage ('test') {
+        echo 'testing'
     }
 
-    stage('deploy') {
-      steps {
+    stage ('deploy') {
         echo 'deploying'
-      }
+        def ciMsg = sh returnStdout: true, script: 'git log -1 --pretty=format:"%s"'
+
+        if (env.BRANCH_NAME == 'release') {
+            //deploy to release env machine
+        } else if (env.BRANCH_NAME == 'master') {
+            //deploy to prod env machine
+            if (ciMsg.indexOf('[PROD]') == 0) {
+                echo 'ci msg hash "[PROD]"'
+            }
+            echo 'deploy last release to prod'
+        } else {
+            if (ciMsg.indexOf('[DEV]') == 0) {
+                //deploy to dev env machine
+            }
+            if (ciMsg.indexOf('[QA]') == 0) {
+                //deploy to qa env machine
+            }
+        }
     }
-  }
+
+    stage ('notify') {
+
+    }
 }
